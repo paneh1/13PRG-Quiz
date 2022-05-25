@@ -1,0 +1,19 @@
+from tkinter import *
+from turtle import width
+
+ws = Tk()
+ws.title('PythonGuides')
+ws.geometry('770x450')
+ws.config(bg='#f7faff')
+
+img = PhotoImage(file="books7.png")
+label = Label(ws,image=img)
+label.place(x=50, y=60)
+
+enter = Entry(ws,width=20)
+enter.place(x=50, y=50, height=100)
+
+button = Button(ws, text='SEND', relief=RAISED, font=('Arial Bold', 18))
+button.place(x=190, y=250)
+
+ws.mainloop()
