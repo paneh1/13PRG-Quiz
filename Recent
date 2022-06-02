@@ -1,0 +1,34 @@
+from tkinter import *
+from turtle import width
+
+root = Tk()
+root.title('PythonGuides')
+root.geometry('857x410')
+root.config(bg='#f7faff')
+
+img = PhotoImage(file="books8.png")
+label = Label(root,image=img)
+label.place(x=0, y=0)
+
+QuestionBox = Frame(root, highlightbackground='black', highlightthickness=5,width=600, height=200,bg ="white",bd= 0)  
+QuestionBox.place(x=128, y=115,height=95)
+Greeting = Label(root, text="10ENG Language Features Quiz \n Mr Reynolds", font=('Century Gothic',19), bg='white')
+Greeting.place(x=230,y=130)
+
+def newWind(self):
+    new
+
+
+#StartButt = Button(root, text='START', font=('Century Gothic',13), width=14,height=2, bg='white',fg='black', highlightbackground='yellow',highlightthickness=2,bd=0)
+#StartButt.place(x=190, y=255)
+
+StartButton = Button(root, text="START",command=self.newWind, font=("Century Gothic",13))
+StartButton.place(x=190,y=255,width=150,height=58)
+
+#ExitButt = Button(root, text="EXIT", font =('Century Gothic',13),width = 14, height=2, bg ='white',fg='black',highlightbackground='black',highlightthickness=0,bd=5,command=root.destroy)
+#ExitButt.place(x=520,y=255)
+
+ExitButton = Button(root, text = 'EXIT', font =("Century Gothic",13), command = root.destroy, bg='white')
+ExitButton.place(x=520, y=255, width = 150, height=58)
+
+root.mainloop()
