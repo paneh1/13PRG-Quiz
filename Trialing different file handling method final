@@ -1,0 +1,8 @@
+hello = []
+
+with open('testing.txt','r') as pals:
+    for each in pals.readlines():
+        eachy = each.split("/n")
+        hello.append(eachy[0])
+
+print(hello)
