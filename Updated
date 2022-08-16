@@ -1,0 +1,149 @@
+from tkinter import *
+from turtle import width 
+import random
+
+root = Tk()
+root.title('10ENG Language Features Quiz')
+root.geometry('857x410')
+root.config(bg='#f7faff')
+
+img = PhotoImage(file='books.png')
+bg = Label(root,image=img)
+bg.place(x=0,y=0)
+
+TitleBox = Frame(root, highlightbackground='black', highlightthickness=5,width=600, height=200,bg ="white",bd= 0)  
+TitleBox.place(x=128, y=115,height=95)
+Greeting = Label(root, text="10ENG Language Features Quiz \n Mr Reynolds", font=('Century Gothic',19), bg='white')
+Greeting.place(x=210,y=130)
+
+def variables():
+    global total
+    global wrongs
+    global rights
+    global quests 
+    global skips
+    total = 0
+    wrongs = 0
+    rights = 0
+    quests = 0
+    skips = 0
+
+def EndScreen():
+    End = Toplevel(w1)
+    End.title('10ENG Language Features Quiz')
+    End.geometry('857x410')
+    w1.withdraw()
+
+    bg = Label(End,image=img)
+    bg.place(x=0,y=0)
+
+def process2():
+    global quests
+    if quests == 20:
+        EndScreen()
+    else:
+        global w1
+        w1.withdraw()
+        w1open()
+
+def WrongAns():
+    global wrongs
+    global quests
+    wrongs = wrongs +1 
+    global w1
+    w1.withdraw()
+    w1open()
+
+def w1open():
+    fhandling()
+    global inst
+    global w1
+    w1 = Toplevel(inst)
+    w1.title("10ENG Language Features Quiz")
+    w1.geometry('857x410')
+
+    inst.withdraw()
+    root.withdraw()
+
+    bg = Label(w1,image=img)
+    bg.place(x=0,y=0)
+
+    global quests
+    quests = quests +1
+    print(quests)
+
+    global Question
+    QuestionBox = Frame(w1, highlightbackground='black', highlightthickness=5,width=700,bg ="white",bd= 0)  
+    QuestionBox.place(x=78, y=80,height=95)
+    Question = Label(w1, text = Question,  font=('Century Gothic',12), bg='white')
+    Question.place(relx = 0.5, rely = 0.3,anchor=CENTER)
+
+    AnsButton = Button(w1, text = Answer, command = process2, font = ("Century Gothic",10), bg = 'white', fg = 'black')
+    AnsButton.place(x = 140, y = 190, width = 250, height = 50)
+
+    if (Wro2 == '') and (Wro3 == ''):
+        AnsButton = Button(w1, text = Answer, command = process2, font = ("Century Gothic",10), bg = 'white', fg = 'black')
+        AnsButton.place(x = 140, y = 190, width = 250, height = 50)
+        WroBt1 = Button(w1, text = Wro1, command = WrongAns, font = ("Century Gothic",10), bg = 'white', fg = 'black')
+        WroBt1.place(x = 470, y = 190, width = 250, height = 50)
+    else:
+        WroBt1 = Button(w1, text = Wro1, command = WrongAns, font = ("Century Gothic",10), bg = 'white', fg = 'black')
+        WroBt1.place(x = 140, y = 290, width = 250, height = 50)
+        WroBt2 = Button(w1, text = Wro2, command = WrongAns, font = ("Century Gothic",10), bg = 'white', fg = 'black')
+        WroBt2.place(x = 470, y = 190, width = 250, height = 50)
+        WroBt3 = Button(w1, text = Wro3, command = WrongAns, font = ("Century Gothic",10), bg = 'white', fg = 'black')
+        WroBt3.place(x = 470, y = 290, width = 250, height = 50)
+
+def fhandling():
+    rannum = random.randint(0,19)
+    global Answer
+    global Question
+    global Wro1
+    global Wro2
+    global Wro3
+    with open('Correct.txt') as f:
+        Ans = f.read()
+        AnsSplit = (Ans.split(","))
+        Answer = AnsSplit[rannum]
+    with open('Questions.txt')as f1:
+        Que = f1.read()
+        QueSplit = (Que.split('/'))
+        Question = QueSplit[rannum]
+    with open('Wrong.txt') as f2:
+        Wro = f2.read()
+        WroSplit = (Wro.split("/"))
+        Wrongs = WroSplit[rannum]
+        Wros = (Wrongs.split(","))
+        Wro1 = Wros[0]
+        Wro2 = Wros[1]
+        Wro3 = Wros[2]
+        
+
+#Starts the quiz and displays instrution screen links to w1 (first question)
+def start():
+    variables()
+    global inst
+    inst = Toplevel(root)
+    inst.title("10ENG Language Features Quiz")
+    inst.geometry('857x410')
+
+    bg = Label(inst,image=img)
+    bg.place(x=0,y=0)
+
+    QuestionBox = Frame(inst, highlightbackground='black', highlightthickness=5,width=600, height=150,bg ="white")  
+    QuestionBox.place(x=128, y=115)
+    Inst = Label(inst, text = 'You will be given 10 questions about language features.\nChoose the answers you think are correct. You can skip \ntwo questions.',font=('Century Gothic',15), bg='white')
+    Inst.place(x = 150, y = 150)
+
+    FirstQ = Button(inst, text = 'NEXT SCREEN', command = w1open, font = ("Century Gothic",15), bg = 'white', fg = 'black')
+    FirstQ.place(x = 2, y = 360, width = 180, height = 50)
+
+#Creates and places Start button to begin quiz
+StartButton = Button(root, text = 'START', command = start, font = ("Century Gothic",15), bg = 'white', fg = 'black')
+StartButton.place(x = 210, y = 260, width = 130, height = 50)
+
+#Creates and places exit button to close quiz immediately 
+ExitButton = Button(root, text = 'EXIT', command = root.destroy, font = ("Century Gothic",15), bg = 'white')
+ExitButton.place(x = 490, y = 260, width = 130, height = 50)
+
+root.mainloop()
