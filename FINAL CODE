@@ -1,0 +1,259 @@
+from tkinter import *
+import tkinter as tk
+from turtle import width 
+import random
+
+root = Tk()
+root.title('10ENG Language Features Quiz')
+root.geometry('857x410')
+root.config(bg='#f7faff')
+
+img = PhotoImage(file='books.png')
+bg = Label(root,image=img)
+bg.place(x=0,y=0)
+
+TitleBox = Frame(root, highlightbackground='black', highlightthickness=5,width=600, height=200,bg ="white",bd= 0)  
+TitleBox.place(x=128, y=115,height=95)
+Greeting = Label(root, text="10ENG Language Features Quiz \n Mr Reynolds", font=('Century Gothic',19), bg='white')
+Greeting.place(x=210,y=130)
+
+global retry
+retry = 0
+
+def variables():
+    global ScoreTotal
+    global wrongs
+    global quests 
+    global skips
+    global randomlist
+    ScoreTotal = 0
+    wrongs = 0
+    quests = 0
+    skips = 0
+    randomlist = 0
+
+def EndScreen():
+    global End
+    End = Toplevel(w1)
+    End.title('10ENG Language Features Quiz')
+    End.geometry('857x410')
+    w1.withdraw()
+
+    bg = Label(End,image=img)
+    bg.place(x=0,y=0)
+
+    global ScoreTotal 
+    ScoreTotal = 10 - wrongs
+
+    global retry 
+    retry = retry +1
+
+    ScoreBox = Frame(End, highlightbackground='black', highlightthickness=5,width=600, height=200,bg ="white",bd= 0)  
+    ScoreBox.place(x=128, y=25,height=75)
+    GradeBox = Frame(End, highlightbackground='black', highlightthickness=5,width=600, height=200,bg ="white",bd= 0)  
+    GradeBox.place(x=128, y=125,height=75)
+    MessageBox = Frame(End, highlightbackground='black', highlightthickness=5,width=600, height=200,bg ="white",bd= 0)  
+    MessageBox.place(x=128, y=225,height=95)
+
+    ScoreOut = Label(End, text = ('Your score is',ScoreTotal,'/10!'),font=('Century Gothic',16), bg='white')
+    ScoreOut.place(relx = 0.5, rely = 0.15,anchor=CENTER) 
+
+    if (ScoreTotal == 0) or (ScoreTotal == 1) or (ScoreTotal == 2) or (ScoreTotal ==3):
+        GradeOut = Label(End, text = 'Your grade is: Not Achieved', font = ('Century Gothic',16),bg = 'white')
+        GradeOut.place(relx = 0.5, rely = 0.4,anchor=CENTER)
+    if (ScoreTotal == 4) or (ScoreTotal == 5) or (ScoreTotal == 6):
+        GradeOut = Label(End, text = 'Your grade is: Achieved', font = ('Century Gothic',16),bg = 'white')
+        GradeOut.place(relx = 0.5, rely = 0.4,anchor=CENTER)
+    if (ScoreTotal == 7) or (ScoreTotal ==8):
+        GradeOut = Label(End, text = 'Your grade is: Merit', font = ('Century Gothic',16),bg = 'white')
+        GradeOut.place(relx = 0.5, rely = 0.4,anchor=CENTER)
+    if (ScoreTotal == 9) or (ScoreTotal == 10):
+        GradeOut = Label(End, text = 'Your grade is: Excellence', font = ('Century Gothic',16),bg = 'white')
+        GradeOut.place(relx = 0.5, rely = 0.4,anchor=CENTER)
+
+    if (ScoreTotal == 0) or (ScoreTotal == 1) or (ScoreTotal == 2) or (ScoreTotal ==3):
+        MsgOut = Label(End, text = 'You have some work to do :(',font=('Century Gothic',16), bg='white')
+        MsgOut.place(relx = 0.5, rely = 0.66,anchor=CENTER)
+    if (ScoreTotal == 4) or (ScoreTotal == 5) or (ScoreTotal == 6):
+        MsgOut = Label(End, text = 'Some room for improvement.',font=('Century Gothic',16), bg='white')
+        MsgOut.place(relx = 0.5, rely = 0.66,anchor=CENTER)
+    if (ScoreTotal == 7) or (ScoreTotal ==8):
+        MsgOut = Label(End, text = 'Well done!',font=('Century Gothic',16), bg='white')
+        MsgOut.place(relx = 0.5, rely = 0.66,anchor=CENTER)
+    if (ScoreTotal == 9) or (ScoreTotal == 10):
+        MsgOut = Label(End, text = 'Amazing job! You have mastered language features!',font=('Century Gothic',16), bg='white')
+        MsgOut.place(relx = 0.5, rely = 0.66,anchor=CENTER)
+
+    FinExitButton = Button(End, text = 'EXIT', command = root.destroy, font = ("Century Gothic",15), bg = 'white')
+    FinExitButton.place(x = 0, y = 360, width = 150, height = 50)
+    
+    RetryButton = Button(End, text = "RETRY", command = start, font = ("Century Gothic",15), bg = 'white')
+    RetryButton.place(x = 707, y = 360, width = 150, height = 50)
+
+def RightAns():
+    global quests
+    quests = quests +1
+    global randomlist
+    randomlist = randomlist + 1
+    if quests == 10:
+        EndScreen()
+    else:
+        global w1
+        w1.withdraw()
+        w1open()
+
+def WrongAns():
+    global wrongs
+    wrongs = wrongs +1
+    global quests
+    quests = quests +1
+    global randomlist
+    randomlist = randomlist + 1
+    if quests == 10:
+        EndScreen()
+    else:
+        global w1
+        w1.withdraw()
+        w1open()
+
+def skipped():
+    global skips 
+    skips = skips +1
+    w1.withdraw()
+    w1open()
+
+def w1open():
+    fhandling()
+    global inst
+    global w1
+    w1 = Toplevel(inst)
+    w1.title("10ENG Language Features Quiz")
+    w1.geometry('857x410')
+    inst.withdraw()
+    root.withdraw()
+
+    bg = Label(w1,image=img)
+    bg.place(x=0,y=0)
+
+    global Question
+    QuestionBox = Frame(w1, highlightbackground='black', highlightthickness=5,width=700,bg ="white",bd= 0)  
+    QuestionBox.place(x=78, y=80,height=95)
+    Question = Label(w1, text = Question,  font=('Century Gothic',12), bg='white')
+    Question.place(relx = 0.5, rely = 0.3,anchor=CENTER)
+
+    rannum4 = range(0,4)
+    rannum5 = random.sample(rannum4, k = 4)
+
+    with open('Coordinates.txt') as f4:
+        coor = f4.read()
+        coorsplit = (coor.split("/"))
+        bt1 = coorsplit[rannum5[0]]
+        bt2 = coorsplit[rannum5[1]]
+        bt3 = coorsplit[rannum5[2]]
+        bt4 = coorsplit[rannum5[3]]
+        finbt1 = (bt1.split(","))
+        finbt2 = (bt2.split(','))
+        finbt3 = (bt3.split(','))
+        finbt4 = (bt4.split(","))
+        print("bt1",finbt1)
+        print("bt2",finbt2)
+        print("bt3",finbt3)
+        print("bt4",finbt4)
+
+    rannum6 = range(0,2)
+    rannum7 = random.sample(rannum6,k=2)
+
+    if (Wro2 == '') and (Wro3 == ''):
+        with open('TFCoordinates.txt') as f5:
+            TFCoor = f5.read()
+            TFSplit = (TFCoor.split("/"))
+            Tf1 = TFSplit[rannum7[0]]
+            Tf2 = TFSplit[rannum7[1]]
+            TFBt1 = (Tf1.split(","))
+            TFBt2 = (Tf2.split(","))
+            print("TF1",TFBt1)
+            print("TF2",TFBt2)
+
+        AnsButton = Button(w1, text = Answer, command = RightAns, font = ("Century Gothic",11), bg = 'white', fg = 'black',activebackground="#89ff6b")
+        AnsButton.place(x = TFBt1[0], y = TFBt2[1], width = 260, height = 50)
+        WroBt1 = Button(w1, text = Wro1, command = WrongAns, font = ("Century Gothic",11), bg = 'white', fg = 'black',activebackground="#ff2929")
+        WroBt1.place(x = TFBt2[0], y = TFBt2[1], width = 260, height = 50)
+    else:
+        AnsButton = Button(w1, text = Answer, command = RightAns, font = ("Century Gothic",11), bg = 'white', fg = 'black',activebackground="#89ff6b")
+        AnsButton.place(x = finbt1[0], y = finbt1[1], width = 260, height = 50)
+        WroBt1 = Button(w1, text = Wro1, command = WrongAns, font = ("Century Gothic",11), bg = 'white', fg = 'black',activebackground="#ff2929")
+        WroBt1.place(x = finbt2[0], y = finbt2[1], width = 260, height = 50)
+        WroBt2 = Button(w1, text = Wro2, command = WrongAns, font = ("Century Gothic",11), bg = 'white', fg = 'black',activebackground="#ff2929")
+        WroBt2.place(x = finbt3[0], y = finbt3[1], width = 260, height = 50)
+        WroBt3 = Button(w1, text = Wro3, command = WrongAns, font = ("Century Gothic",11), bg = 'white', fg = 'black',activebackground="#ff2929")
+        WroBt3.place(x = finbt4[0], y = finbt4[1], width = 260, height = 50)
+
+    global skips
+    if skips < 2:
+        SkipButton = Button(w1, text = 'SKIP',command = skipped, font = ("Century Gothic",15), bg = 'white')
+        SkipButton.place(x= 707, y =360, width = 150, height = 50)
+
+    ExitButton = Button(w1, text = 'EXIT', command = w1.destroy, font = ("Century Gothic",15), bg = 'white')
+    ExitButton.place(x = 0,y=360, width = 150, height = 50)
+
+def fhandling():
+    rannum1 = range(0,20)
+    rannum2 = random.sample(rannum1, k = 20)
+    global randomlist 
+    rannum3 = rannum2[randomlist]
+    global Answer
+    global Question
+    global Wro1
+    global Wro2
+    global Wro3
+    with open('Correct.txt') as f:
+        Ans = f.read()
+        AnsSplit = (Ans.split(","))
+        Answer = AnsSplit[rannum3]
+    with open('Questions.txt')as f1:
+        Que = f1.read()
+        QueSplit = (Que.split('/'))
+        Question = QueSplit[rannum3]
+    with open('Wrong.txt') as f2:
+        Wro = f2.read()
+        WroSplit = (Wro.split("/"))
+        Wrongs = WroSplit[rannum3]
+        Wros = (Wrongs.split(","))
+        Wro1 = Wros[0]
+        Wro2 = Wros[1]
+        Wro3 = Wros[2]
+
+#Starts the quiz and displays instrution screen links to w1 (first question)
+def start():
+    variables()
+    global inst
+    inst = Toplevel(root)
+    inst.title("10ENG Language Features Quiz")
+    inst.geometry('857x410')
+
+    global retry
+    print(retry)
+    global End
+    if retry > 0:
+        End.destroy()
+
+    bg = Label(inst,image=img)
+    bg.place(x=0,y=0)
+
+    QuestionBox = Frame(inst, highlightbackground='black', highlightthickness=5,width=600, height=150,bg ="white")  
+    QuestionBox.place(x=128, y=115)
+    Inst = Label(inst, text = 'You will be given 10 questions about language features.\nChoose the answers you think are correct. You can skip \ntwo questions.',font=('Century Gothic',15), bg='white')
+    Inst.place(x = 150, y = 150)
+
+    FirstQ = Button(inst, text = 'NEXT SCREEN', command = w1open, font = ("Century Gothic",15), bg = 'white', fg = 'black')
+    FirstQ.place(x = 2, y = 360, width = 180, height = 50)
+
+#Creates and places Start button to begin quiz
+StartButton = Button(root, text = 'START', command = start, font = ("Century Gothic",15), bg = 'white', fg = 'black')
+StartButton.place(x = 210, y = 260, width = 150, height = 50)
+
+#Creates and places exit button to close quiz immediately 
+ExitButton = Button(root, text = 'EXIT', command = root.destroy, font = ("Century Gothic",15), bg = 'white')
+ExitButton.place(x = 490, y = 260, width = 150, height = 50)
+
+root.mainloop()
